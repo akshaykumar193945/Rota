@@ -45,23 +45,32 @@ def admission_records():
 
 @app.route('/find')
 def find():
+    print("Line no 48")
     return render_template('find.html')
 
 @app.route('/display_record', methods=['POST'])
 def display_record():
     if request.method == 'POST':
         name = request.form['name']
-        print("Line no 50", name)
         records = AdmissionRecord.query.filter(AdmissionRecord.name == name).all()
-        print(records)
         if len(records):
             return render_template('display_record.html', records=records)
         return render_template('error.html', records="Not Found")
     return render_template('error.html')
 
-# @app.route('/delete')
-# def delete():
-#     return render_template('delete.html')
+@app.route('/delete_record_by_id', methods=['POST'])
+def delete_record_by_id():
+    if request.method == 'POST':
+        record_id = request.form['record_id']
+        record = AdmissionRecord.query.get(record_id)
+        if record:
+            db.session.delete(record)
+            db.session.commit()
+            print("Record is ", record)
+            return render_template('delete_record.html', record=record)
+        else:
+            return render_template('error.html')
+    return render_template('error.html')
 
 @app.route('/service')
 def service():
