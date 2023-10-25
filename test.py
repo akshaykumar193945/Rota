@@ -70,6 +70,7 @@ def delete_record_by_id():
             return render_template('delete_record.html', record=record)
         else:
             return render_template('error.html')
+    print('Error')
     return render_template('error.html')
 
 @app.route('/service')
